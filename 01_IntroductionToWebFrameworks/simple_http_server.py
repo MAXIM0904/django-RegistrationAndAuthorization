@@ -14,13 +14,14 @@ class SimpleGetHandler(BaseHTTPRequestHandler):
         content = (f"<html>"
                    f"<body>"
                    f"<h1>{message}</h1>"
+                   f"<h1>{message}</h1>"
                    f"</body>"
                    f"</html>")
         return content.encode("utf8")
 
     def do_GET(self):
         self._set_headers()
-        message = "Привет, мир!"
+        message = "Hello, world!"
         self.wfile.write(self._html(message))
 
 
