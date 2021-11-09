@@ -10,7 +10,7 @@ class FilterIPMiddleware:
         http_metod = reguest.META.get("REQUEST_METHOD")
         url_address = reguest.META.get("HTTP_HOST")
 
-        text = f"{strftime('%c')}, {http_metod}, {url_address}\n"
+        text = f"{strftime('%c')}, {http_metod}, {url_address}, {ip}\n"
 
         with open("logging.txt", "w") as file:
             file.write(text)
