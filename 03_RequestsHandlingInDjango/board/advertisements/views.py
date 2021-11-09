@@ -27,7 +27,8 @@ class Home_page(View):
 
 class Advertisement(View):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         if os.path.exists('count.txt'):
             with open("count.txt", "r") as file:
                 self.counter = int(file.read())
@@ -36,11 +37,13 @@ class Advertisement(View):
             with open("count.txt", "w") as file:
                 file.write(f'{self.counter}')
 
+
     def count(self):
         self.counter += 1
         with open("count.txt", "w") as file:
             file.write(f'{self.counter}')
         return self.counter
+
 
     def get(self, request):
         self.counter = self.count()
@@ -58,7 +61,6 @@ class Advertisement(View):
                                                                           'counter': f'{self.counter} GET запрос.'})
 
     def post(self, request):
-        # self.counter += 1
         message = "Запрос на создание новой записи успешно выполнен"
         return render(request, 'advertisements/advertisement_list.html', {'advertisements': message})
 
