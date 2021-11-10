@@ -1,52 +1,25 @@
 from django.views import View
 from django.views.generic import TemplateView
 from django.shortcuts import render
-import os.path
+
 
 class Home_page(View):
 
     def get(self, request):
         advertisements = [
-            # self.counter,
             'Выбор категории из списка',
             'Выбор региона из списка',
         ]
 
-        text_fild = f'input type = "text" name = "userName" ' \
-                    f'placeholder = Tекстовое_поле_для_ввода_названия_объявления size = 50'
-
-        button = 'button type=button></button'
-        button_name = 'Нажать'
-        return render(request, 'advertisements/advertisement_list.html', {'advertisements': advertisements,
-                                                                          'title': 'Главная страница',
-                                                                          'text_fild': text_fild,
-                                                                          'button': button,
-                                                                          'button_name': button_name})
-
+        return render(request, 'advertisements/home_page.html', {'advertisements': advertisements,
+                                                                          'title': 'Главная страница'})
 
 
 class Advertisement(View):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if os.path.exists('count.txt'):
-            with open("count.txt", "r") as file:
-                self.counter = int(file.read())
-        else:
-            self.counter = 0
-            with open("count.txt", "w") as file:
-                file.write(f'{self.counter}')
-
-
-    def count(self):
-        self.counter += 1
-        with open("count.txt", "w") as file:
-            file.write(f'{self.counter}')
-        return self.counter
-
+    counter = 0
 
     def get(self, request):
-        self.counter = self.count()
+        Advertisement.counter += 1
         print(self.counter)
 
         advertisements = [
@@ -58,16 +31,21 @@ class Advertisement(View):
         ]
         return render(request, 'advertisements/advertisement_list.html', {'advertisements': advertisements,
                                                                           'title': 'Список объявлений',
-                                                                          'counter': f'{self.counter} GET запрос.'})
+                                                                          'counter': f'{Advertisement.counter} '
+                                                                                     f'GET запрос.'})
 
     def post(self, request):
-        message = "Запрос на создание новой записи успешно выполнен"
-        return render(request, 'advertisements/advertisement_list.html', {'advertisements': message})
+        Advertisement.counter += 1
+        message = ["Запрос на создание новой записи успешно выполнен."]
+        return render(request, 'advertisements/advertisement_list.html', {'advertisements': message,
+                                                                          'title': 'Список объявлений POST',
+                                                                          'counter': f'{Advertisement.counter} '
+                                                                                     f'POST запрос.'})
 
 
 class Contacts(TemplateView):
 
-    template_name = 'advertisements/advertisement_list.html'
+    template_name = 'advertisements/contacts.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,7 +59,7 @@ class Contacts(TemplateView):
 
 class About(TemplateView):
 
-    template_name = 'advertisements/advertisement_list.html'
+    template_name = 'advertisements/аbout.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
