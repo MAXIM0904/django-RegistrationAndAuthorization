@@ -20,3 +20,11 @@ class AdvertisementListView(ListView):
 class AdvertisementDetailView(DetailView):
     model = Advertisement
     template_name = "advertisements/advertisement_detail.html"
+
+    def get(self, reguest, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.views_count += 1
+        self.object.save()
+        contex = self.get_context_data(object=self.object)
+        return self.render_to_response(contex)
+

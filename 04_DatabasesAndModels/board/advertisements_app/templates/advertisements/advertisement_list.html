@@ -5,7 +5,10 @@
     <ul>
         {% for advertisement in object_list %}
         <li>
-            <a href="/advertisements/{{advertisement.id}}">{{advertisement.title}}</a>
+            <a href="/advertisements/{{advertisement.id}}">
+                {{advertisement.title}} | Цена: {{advertisement.price}} рублей |
+                Наименование рубрики - {{advertisement.status_category}}
+            </a>
         </li>
         {% endfor %}
 
