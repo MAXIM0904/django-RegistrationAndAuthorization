@@ -27,4 +27,3 @@ class AdvertisementDetailView(DetailView):
         self.object.save()
         contex = self.get_context_data(object=self.object)
         return self.render_to_response(contex)
-
