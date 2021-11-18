@@ -3,13 +3,9 @@ from .models import Advertisement
 from django.views.generic import ListView, DetailView
 
 
-# def home_page(reguest, *args, **kwargs):
-#     return render(reguest, "advertisements/home_page.html", {})
-#
 
-# def advertisements(reguest, *args, **kwargs):
-#     advertisements = Advertisement.objects.all()
-#     return render(reguest, "advertisements/advertisements.html", {"advertisements": advertisements})
+def home_page(reguest, *args, **kwargs):
+    return render(reguest, "advertisements/home_page.html", {})
 
 
 class AdvertisementListView(ListView):
