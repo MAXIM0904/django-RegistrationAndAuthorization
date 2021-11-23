@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Новости</title>
+</head>
+
+<body>
+    <h2>{{object.name_news}}</h2>
+
+    <p>
+        {{object.content_news}}<br>
+        Автор: {{object.author_news}} {{object.author_news.publication}}
+    </p>
+    <p>
+        Cтатус: {{object.status}}<br>
+        Дата создания: {{object.created_news}}<br>
+        Дата редактирования: {{object.update_news}}<br>
+        Количество просмотров: {{object.views_count}}
+    </p>
+
+    <form method="get" action="{{news.id}}/change">
+        {% csrf_token %}
+        {{ news_form.as_p }}
+        <button type="submit">Редактировать</button>
+    </form>
+</body>
+</html>
