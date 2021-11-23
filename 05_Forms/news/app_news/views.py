@@ -14,8 +14,6 @@ class NewsListView(generic.ListView):
     template_name = "news/news_list.html"
 
 
-
-
 class NewsDetailView(generic.DetailView):
     model = News
     template_name = "news/news_detail.html"

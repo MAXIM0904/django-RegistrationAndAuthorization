@@ -12,8 +12,27 @@ class News(models.Model):
     status = models.ForeignKey("Status_news", default=None, null=True, on_delete=models.CASCADE,
                                verbose_name="Статус новости")
 
+
+    class Meta:
+        ordering = ['-update_news']
+
+
     def __str__(self):
         return self.name_news
+
+
+class Comment(models.Model):
+    post = models.ForeignKey("News", default=None, null=True, on_delete=models.CASCADE, related_name="Комментарий")
+    name = models.CharField(max_length=100, verbose_name="Имя комментария")
+    body = models.TextField(verbose_name="Текст комментария")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["created"]
+
+    def __str__(self):
+        return self.name
 
 
 class Author_news(models.Model):
