@@ -13,6 +13,9 @@
             <p>
                 <a href="/news_list/{{news.id}}"> {{news}}</a>
             </p>
+            <form method="get" action="{{news.id}}/change">
+            <button type="submit">Редактировать</button>
+            </form>
         </li>
         {% endfor %}
     </ul>
