@@ -15,7 +15,6 @@ class News(models.Model):
     class Meta:
         ordering = ['-created_news']
 
-
     def __str__(self):
         return self.name_news
 

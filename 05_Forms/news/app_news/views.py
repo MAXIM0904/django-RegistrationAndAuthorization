@@ -15,6 +15,7 @@ class NewsListView(generic.ListView):
     model = News
     template_name = "news/news_list.html"
 
+
 class ChahgeListView(generic.ListView):
     model = News
     template_name = "news/change_news_list.html"
@@ -65,6 +66,7 @@ class NewsFormView(View):
             News.objects.create(**news_form.cleaned_data)
             return HttpResponseRedirect("/")
         return render(request, "news/edit.html", context={"news_form": news_form})
+
 
 class NewsEditFormView(View):
     def get(self, request, profile_id):

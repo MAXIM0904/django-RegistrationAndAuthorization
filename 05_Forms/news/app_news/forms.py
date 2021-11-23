@@ -3,7 +3,6 @@ from django.forms import ModelForm
 from .models import News, Comment
 
 
-
 class NewsForm(ModelForm):
 
     class Meta:

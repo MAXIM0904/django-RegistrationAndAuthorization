@@ -19,11 +19,7 @@
         Количество просмотров: {{object.views_count}}
 
     </p>
-
-    {% if object.сomment_news %}
         <p>Комментарий</p>
-
-
         {% for comment in object.сomment_news.all %}
         Комментарий к новости: {{comment.body}}<br>
         {% endfor %}
@@ -33,12 +29,5 @@
             {{ form.as_p }}<br>
             <button type="submit">Добавить</button>
         </form>
-
-    {% else %}
-
-    <form method="get" action="{{news.id}}/change">
-        <button type="submit">Редактировать</button>
-    </form>
-    {% endif %}
 </body>
 </html>
