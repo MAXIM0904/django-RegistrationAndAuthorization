@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ object.title }}</title>
+</head>
+<body>
+<h2>{{ object.title }} </h2>
+<ul>
+    <li>Цена - {{ object.price }}</li>
+    <li>Описание - {{object.description }}</li>
+    <li>Рубрика - {{ object.status_category }}</li>
+    <li>Дата объявления - {{ object.created_at }}</li>
+    <li>Контактная информация - {{ object.status_author }}, тел. {{ object.status_author.telephone }},
+        email: {{ object.status_author.email }}</li>
+    <li>Количество просмотров - {{ object.views_count }}</li>
+</ul>
+</body>
+</html>
