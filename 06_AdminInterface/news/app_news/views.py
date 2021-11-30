@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
 from .forms import CommentForm
-from .models import News
+from .models import News, Comment
 
 
 def list_news(requset, *args, **kwargs):
@@ -54,3 +54,21 @@ class NewsUpdateView(UpdateView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('list_news')
+
+
+class CommentListView(ListView):
+    model = Comment
+    template_name = 'news/comment_list.html'
+
+
+class CommentDetailView(DetailView):
+    model = Comment
+    template_name = 'news/comment_detail.html'
+
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.text_comment = "Удалено администратором"
+        self.object.save()
+        contex = self.get_context_data(object=self.object)
+        return self.render_to_response(contex)

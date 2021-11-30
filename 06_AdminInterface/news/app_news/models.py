@@ -2,25 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class News(models.Model):
+    STATUS_CHOICES = [("y", "Активно"),
+                      ("n", "Неактивно")
+                      ]
     name = models.CharField(max_length=100, verbose_name="Заголовок новости")
     text_news = models.TextField(verbose_name="Текст новости")
     update_news = models.DateTimeField(auto_now=True)
     created_news = models.DateTimeField(auto_now_add=True)
-    status = models.ForeignKey("Status", default=None, null=True, on_delete=models.CASCADE,
-                               verbose_name="Статус новости")
+    status = models.CharField(max_length=1, default="n", choices=STATUS_CHOICES, verbose_name="Статус новости")
 
     class Meta:
         ordering = ["-created_news"]
 
     def __str__(self):
         return self.name
-
-
-class Status(models.Model):
-    status_news = models.CharField(max_length=50, verbose_name="Статус новости")
-
-    def __str__(self):
-        return self.status_news
 
 
 class Comment(models.Model):
