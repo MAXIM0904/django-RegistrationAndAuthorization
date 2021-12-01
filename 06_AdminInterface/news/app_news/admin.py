@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import News, Comment
+from django.template.defaultfilters import truncatechars
+
 
 class CommentInLine(admin.TabularInline):
     model = Comment
@@ -24,11 +26,19 @@ class NewsAdmin(admin.ModelAdmin):
     mark_as_inactive.short_description = 'Перевести в статус неактивно'
     mark_as_actions.short_description = 'Перевести в статус активно'
 
+    def __str__(self):
+        return "Новости"
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id_news', 'author', 'text_comment']
+
+    def short_description(self):
+        return truncatechars(self.text_comment, 15)
+
+    list_display = ['id_news', 'author', short_description]
     list_filter = ('author',)
     search_fields = ('author', 'text_comment',)
+
+
 
 
 admin.site.register(News, NewsAdmin)
