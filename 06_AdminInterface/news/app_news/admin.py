@@ -34,6 +34,8 @@ class CommentAdmin(admin.ModelAdmin):
     def short_description(self):
         return truncatechars(self.text_comment, 15)
 
+    short_description.short_description = 'Текст комментария'
+
     list_display = ['id_news', 'author', short_description]
     list_filter = ('author',)
     search_fields = ('author', 'text_comment',)
