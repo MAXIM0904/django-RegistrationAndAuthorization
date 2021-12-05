@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cписок всех новостей</title>
+</head>
+<body>
+    <h2>Оглавление</h2>
+    {% if news_list %}
+    <ul>
+        {% for news in object_list %}
+        <li>
+            <p>
+                <a href="/news_list/{{news.id}}"> {{news}}</a>
+            </p>
+
+            <form method="get" action='/change/{{news.id}}'>
+                <button type="submit">Редактировать</button>
+            </form>
+
+            <form method="get" action="/news_list/{{news.id}}">
+                <button type="submit">Читать</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>Объявлений нет</p>
+    {% endif %}
+</body>
+</html>
