@@ -37,10 +37,10 @@ class NewsDetailView(DetailView, FormMixin):
     def form_valid(self, form):
         user_form_news = form.save(commit=False)
         user_form_news.id_news = self.get_object()
-        try:
+        if self.request.user.is_authenticated:
             user_form_news.author = self.request.user
-        except:
-            user_form_news.name = f"Аноним {self.request.POST['name']}"
+        else:
+            form.fields['name'].widget = f"Аноним {self.request.POST['name']}"
         user_form_news.save()
         return super().form_valid(form)
 

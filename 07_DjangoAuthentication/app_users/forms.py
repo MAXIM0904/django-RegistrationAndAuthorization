@@ -13,7 +13,8 @@ class CommentForm(ModelForm):
 
     class Meta:
         model = Comment
-        fields = ('name', 'text_comment', )
+        fields = ('name', 'text_comment',)
+
 
 
 class AuthForm(ModelForm):
