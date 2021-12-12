@@ -1,8 +1,8 @@
 from django.contrib.auth.views import LoginView, LogoutView
+from django.forms import HiddenInput
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-
 from django.views.generic.edit import FormMixin
 from .forms import CommentForm
 from .models import News, Comment
@@ -11,8 +11,10 @@ from .models import News, Comment
 def list_news(requset, *args, **kwargs):
     return render(requset, 'news/list_news.html', {})
 
+
 def aut_str(requset, *args, **kwargs):
     return render(requset, 'news/login_page.html', {})
+
 
 class NewsListView(ListView):
     model = News
@@ -22,7 +24,14 @@ class NewsListView(ListView):
 class NewsDetailView(DetailView, FormMixin):
     model = News
     template_name = 'news/news_detail.html'
-    form_class = CommentForm
+    form_class_user = CommentForm
+
+    def get_form(self, form_class=form_class_user):
+        form = super().get_form(form_class)
+        if self.request.user.is_authenticated:
+            form.fields['name'].widget = HiddenInput()
+        return form
+
 
     def get_success_url(self, **kwargs):
         return reverse_lazy("news_detail", kwargs={"pk": self.get_object().id})
@@ -40,7 +49,7 @@ class NewsDetailView(DetailView, FormMixin):
         if self.request.user.is_authenticated:
             user_form_news.author = self.request.user
         else:
-            form.fields['name'].widget = f"Аноним {self.request.POST['name']}"
+            user_form_news.name = f"Аноним {self.request.POST['name']}"
         user_form_news.save()
         return super().form_valid(form)
 
@@ -72,7 +81,6 @@ class CommentDetailView(DetailView):
     model = Comment
     template_name = 'news/comment_detail.html'
 
-
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.text_comment = "Удалено администратором"
@@ -80,8 +88,10 @@ class CommentDetailView(DetailView):
         contex = self.get_context_data(object=self.object)
         return self.render_to_response(contex)
 
+
 class AnotherLoginView(LoginView):
     template_name = "news/aut_str.html"
+
 
 class AnotherLogoutView(LogoutView):
     template_name = "news/another_logout.html"

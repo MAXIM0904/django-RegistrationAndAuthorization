@@ -28,19 +28,12 @@
             Текст комментария: {{comment.text_comment}}<br><br>
         {% endfor %}
 
-    {% if request.user.is_authenticated %}
-        <form method="post" action={{messages.id}}>
-            {% csrf_token %}
-            {{ form.text_comment }}<br>
-            <button type="submit">Добавить</button>
-        </form>
-    {% else %}
         <form method="post" action={{messages.id}}>
             {% csrf_token %}
             {{ form.as_p }}<br>
             <button type="submit">Добавить</button>
         </form>
-    {% endif %}
+
 
 </body>
 </html>
