@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+    <h2>Список зарегистрированных пользователей</h2>
+        <ul>
+            {% for profile in object_list %}
+            <p>
+                <a href="update_user/{{profile.id}}">{{profile}}</a>
+            </p>
+            {% endfor %}
+        </ul>
+</body>
+</html>

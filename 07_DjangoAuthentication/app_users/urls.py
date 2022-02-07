@@ -1,8 +1,9 @@
-from django.contrib import admin
 from django.urls import path
 from . import views
 from .views import NewsListView, NewsDetailView, NewsCreateView, NewsUpdateView, CommentListView, CommentDetailView
 from .views import AnotherLoginView, AnotherLogoutView
+
+
 urlpatterns = [
     path('', AnotherLoginView.as_view(), name='list_news'),
     path('news/news_list', NewsListView.as_view(), name='news_news_list'),
