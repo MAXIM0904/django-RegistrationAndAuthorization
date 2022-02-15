@@ -10,6 +10,13 @@
             {% for profile in object_list %}
             <p>
                 <a href="update_user/{{profile.id}}">{{profile}}</a>
+                {% if profile.users.superuser_flag %}
+                    - Модератор
+                {% elif profile.users.verification_flag %}
+                    - Верифицированный пользователь
+                {% else %}
+                    - Обычный пользователь
+                {% endif %}
             </p>
             {% endfor %}
         </ul>

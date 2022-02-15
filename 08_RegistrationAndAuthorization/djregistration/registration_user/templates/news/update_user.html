@@ -6,19 +6,28 @@
 </head>
 <body>
     <h3>Редактировать профиль:</h3>
-
-        <form method="post" action={{messages.id}}>
+        <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}<br>
-            {{ user_form.as_p }}<br>
-            {{ User.as_p }}<br>
+            {% if user_superuser_flag %}
+                <p>Имя пользователя - {{ user_form.username }}</p>
+                <p>Фамилия пользователя - {{ user_form.last_name }}</p>
+                <p>Город проживания - {{ profile_form.city }}</p>
+                <p>Номер телефона - {{ profile_form.phone_number }}</p>
+                <p>Флаг верификации - {{ profile_form.verification_flag }}</p>
+                <p>Флаг супер юзера - {{ profile_form.superuser_flag }}</p>
+            {% else %}
+                <p>Имя пользователя - {{ user_form.username }}</p>
+                <p>Фамилия пользователя - {{ user_form.last_name }}</p>
+                <p>Город проживания - {{ profile_form.city }}</p>
+                <p>Номер телефона - {{ profile_form.phone_number }}</p>
+            {% endif %}
+
             <button type="submit">Сохранить</button>
         </form>
-    <br>
+
     <form method="get" action='/profile_list'>
         {% csrf_token %}
         <button type="submit">Выйти</button>
     </form>
 </body>
-
 </html>

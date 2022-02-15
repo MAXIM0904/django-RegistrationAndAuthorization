@@ -8,7 +8,13 @@
     <h3>Добавить новость:</h3>
     <form method="post" action={{messages.id}}>
         {% csrf_token %}
-        {{ form.as_p }}<br>
+        <p>Заголовок новости - {{ form.hedline_news }}</p>
+        <p>Текст новости - {{ form.text_news }}</p>
+        <p>Статус новости - {{ form.status }}</p>
+        <p>Тег новости - {{ form.tag_news }}</p>
+        {% if request.user.users.superuser_flag %}
+            <p>Опубликовать - {{form.print_flag}}</p>
+        {% endif %}
         <button type="submit">Добавить</button>
     </form>
     <br>

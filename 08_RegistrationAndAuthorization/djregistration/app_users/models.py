@@ -7,6 +7,8 @@ class News(models.Model):
     update_news = models.DateTimeField(auto_now=True)
     created_news = models.DateTimeField(auto_now_add=True)
     status = models.ForeignKey('News_status', on_delete=models.CASCADE, verbose_name='Статус новости')
+    print_flag = models.BooleanField(default=False, verbose_name="Одобрить в печать")
+    tag_news = models.CharField(max_length=100, verbose_name='Тег новости', null=True, blank=True)
 
     class Meta:
         ordering = ['-created_news']
@@ -17,6 +19,7 @@ class News(models.Model):
 
 class News_status(models.Model):
     str_status = models.CharField(max_length=50, verbose_name='Статус новости')
+
 
     def __str__(self):
         return self.str_status

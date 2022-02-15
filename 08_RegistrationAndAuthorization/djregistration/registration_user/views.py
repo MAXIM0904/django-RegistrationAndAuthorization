@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, UpdateView
 from .forms import SignupForm, ProfileForm
 from .models import Profile
@@ -37,9 +37,9 @@ def signup_view(request):
             city = form.cleaned_data['city']
             phone_number = form.cleaned_data['phone_number']
             Profile.objects.create(
-                user = new_user,
-                phone_number=phone_number,
-                city=city
+                users = new_user,
+                phone_number= phone_number,
+                city= city
             )
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
@@ -51,32 +51,54 @@ def signup_view(request):
         return render(request, 'news/signup.html', {'user_form': user_form})
 
 
-
 class UserListView(ListView):
     """ класс просмотра списка пользователей """
-    model = Profile
+    model = User
     template_name = 'news/profile_list.html'
 
 
-class UserUpdateView(UpdateView):
-    model = Profile
-    template_name = 'news/update_user.html'
-    fields = '__all__'
+def update_user(request):
+    """ функция данных пользователя """
+    id_profile_user = request.META['PATH_INFO'].split('/')[-1]
+    profile = Profile.objects.get(users_id=id_profile_user)
+    user_profile = User.objects.get(id=profile.users_id)
 
-    def get_success_url(self, **kwargs):
-        self.success_url = '/profile_list'
-        return str(self.success_url)
+    if request.method == 'POST':
+        profile.superuser_flag = False
+        profile.superuser_flag = False
+        for i_request in request.POST:
+            if i_request == 'username':
+                user_profile.username = request.POST['username']
 
+            if i_request == 'last_name':
+                user_profile.last_name = request.POST['last_name']
 
-# def update_user(request):
-#     """ класс своих данных пользователя """
-#     if request.POST == 'POST':
-#         pass
-#     else:
-#         user_form = SignupForm(instance=request.user)
-#         profile_form = ProfileForm(instance=request.user)
-#         return render(request, 'news/update_user.html', {'user_form': user_form, 'profile_form': profile_form})
-#
-#         #
-#         # self.success_url = '/profile_list'
-#         # return str(self.success_url)
+            if i_request == 'city':
+                profile.city = request.POST['city']
+
+            if i_request == 'phone_number':
+                profile.phone_number = request.POST['phone_number']
+
+            if i_request == 'verification_flag':
+                profile.verification_flag = True
+
+            if i_request == 'superuser_flag':
+                profile.superuser_flag = True
+
+        user_profile.save()
+        profile.save()
+        return redirect('profile_list')
+
+    else:
+        user_form = SignupForm(instance=user_profile)
+        profile_form = ProfileForm(instance=profile)
+        print(Profile.objects.get(users_id=request.user.id))
+        user_verification_flag = Profile.objects.get(users_id=request.user.id)
+        user_superuser_flag = Profile.objects.get(users_id=request.user.id).superuser_flag
+
+        return render(request, 'news/update_user.html', {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'user_verification_flag': user_verification_flag,
+            'user_superuser_flag': user_superuser_flag,
+        })
