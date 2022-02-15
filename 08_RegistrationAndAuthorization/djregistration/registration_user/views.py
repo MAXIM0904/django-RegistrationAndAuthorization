@@ -64,7 +64,7 @@ def update_user(request):
     user_profile = User.objects.get(id=profile.users_id)
 
     if request.method == 'POST':
-        profile.superuser_flag = False
+        profile.verification_flag = False
         profile.superuser_flag = False
         for i_request in request.POST:
             if i_request == 'username':
