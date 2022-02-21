@@ -70,16 +70,9 @@ def update_user(request):
         user_form = UserEditForm(request.POST, instance=user_profile)
         profile_form = ProfileForm(request.POST, instance=profile)
         if user_form.is_valid() and profile_form.is_valid():
-            profile.verification_flag = False
-            profile.superuser_flag = False
-            for i_request in request.POST:
-                if i_request == 'verification_flag':
-                    profile.verification_flag = True
-
-                if i_request == 'superuser_flag':
+            if profile_form.cleaned_data.get('superuser_flag'):
                     profile.superuser_flag = True
                     profile.verification_flag = True
-
             user_profile.save()
             profile.save()
         return redirect('profile_list')
