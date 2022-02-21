@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, UpdateView
-from .forms import SignupForm, ProfileForm
+from django.views.generic import ListView
+from .forms import SignupForm, ProfileForm, UserEditForm
 from .models import Profile
-
 
 
 class RegistrationLoginView(LoginView):
@@ -51,12 +52,14 @@ def signup_view(request):
         return render(request, 'news/signup.html', {'user_form': user_form})
 
 
-class UserListView(ListView):
+class UserListView(PermissionRequiredMixin, ListView):
     """ класс просмотра списка пользователей """
     model = User
     template_name = 'news/profile_list.html'
+    permission_required = 'request.user.users.verification_flag'
 
 
+@permission_required('request.user.users.superuser_flag')
 def update_user(request):
     """ функция данных пользователя """
     id_profile_user = request.META['PATH_INFO'].split('/')[-1]
@@ -64,35 +67,26 @@ def update_user(request):
     user_profile = User.objects.get(id=profile.users_id)
 
     if request.method == 'POST':
-        profile.verification_flag = False
-        profile.superuser_flag = False
-        for i_request in request.POST:
-            if i_request == 'username':
-                user_profile.username = request.POST['username']
+        user_form = UserEditForm(request.POST, instance=user_profile)
+        profile_form = ProfileForm(request.POST, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            profile.verification_flag = False
+            profile.superuser_flag = False
+            for i_request in request.POST:
+                if i_request == 'verification_flag':
+                    profile.verification_flag = True
 
-            if i_request == 'last_name':
-                user_profile.last_name = request.POST['last_name']
+                if i_request == 'superuser_flag':
+                    profile.superuser_flag = True
+                    profile.verification_flag = True
 
-            if i_request == 'city':
-                profile.city = request.POST['city']
-
-            if i_request == 'phone_number':
-                profile.phone_number = request.POST['phone_number']
-
-            if i_request == 'verification_flag':
-                profile.verification_flag = True
-
-            if i_request == 'superuser_flag':
-                profile.superuser_flag = True
-
-        user_profile.save()
-        profile.save()
+            user_profile.save()
+            profile.save()
         return redirect('profile_list')
 
     else:
-        user_form = SignupForm(instance=user_profile)
+        user_form = UserEditForm(instance=user_profile)
         profile_form = ProfileForm(instance=profile)
-        print(Profile.objects.get(users_id=request.user.id))
         user_verification_flag = Profile.objects.get(users_id=request.user.id)
         user_superuser_flag = Profile.objects.get(users_id=request.user.id).superuser_flag
 

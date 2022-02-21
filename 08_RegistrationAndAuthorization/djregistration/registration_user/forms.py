@@ -22,10 +22,10 @@ class SignupForm(UserCreationForm):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ('city', 'phone_number', 'verification_flag', 'superuser_flag',)
 
 
 class UserEditForm(ModelForm):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('username', 'last_name',)

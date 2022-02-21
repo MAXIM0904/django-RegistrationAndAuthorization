@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import QuerySet
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -79,22 +80,25 @@ class NewsDetailView(DetailView, FormMixin):
         return super().form_valid(form)
 
 
-class NewsCreateView(CreateView):
+class NewsCreateView(PermissionRequiredMixin, CreateView):
     """ класс добавления новости. В классе реализован счетчик новостей"""
     model = News
     template_name = 'news/create_news.html'
     fields = '__all__'
+    permission_required = 'request.user.users.verification_flag'
+
 
     def get_success_url(self, **kwargs):
         self.success_url = '/app_users/create_news'
         return str(self.success_url)
 
 
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(PermissionRequiredMixin, UpdateView):
     """класс редактирования новости"""
     model = News
     template_name = 'news/update_news.html'
     fields = '__all__'
+    permission_required = 'request.user.users.verification_flag'
 
     def get_success_url(self, **kwargs):
         self.success_url = '/app_users/news_list'
