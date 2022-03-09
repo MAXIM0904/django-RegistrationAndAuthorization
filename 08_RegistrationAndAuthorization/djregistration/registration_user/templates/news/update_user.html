@@ -8,6 +8,7 @@
     <h3>Редактировать профиль:</h3>
         <form method="post">
             {% csrf_token %}
+            <h4><em>{{no_valid}}</em></h4>
             {% if user_superuser_flag %}
                 <p>Имя пользователя - {{ user_form.username }}</p>
                 <p>Фамилия пользователя - {{ user_form.last_name }}</p>

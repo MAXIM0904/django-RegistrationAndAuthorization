@@ -85,8 +85,9 @@ class NewsCreateView(PermissionRequiredMixin, CreateView):
     model = News
     template_name = 'news/create_news.html'
     fields = '__all__'
-    permission_required = 'request.user.users.verification_flag'
 
+    def has_permission(self):
+        return self.request.user.users.verification_flag
 
     def get_success_url(self, **kwargs):
         self.success_url = '/app_users/create_news'
@@ -98,7 +99,9 @@ class NewsUpdateView(PermissionRequiredMixin, UpdateView):
     model = News
     template_name = 'news/update_news.html'
     fields = '__all__'
-    permission_required = 'request.user.users.verification_flag'
+
+    def has_permission(self):
+        return self.request.user.users.verification_flag
 
     def get_success_url(self, **kwargs):
         self.success_url = '/app_users/news_list'
