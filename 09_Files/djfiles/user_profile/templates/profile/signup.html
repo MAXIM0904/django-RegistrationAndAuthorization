@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+    <form method="post" action="signup">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+<!--        <p> Логин {{user_form.username}}</p>-->
+<!--        <p> Пароль {{user_form.password1}}</p>-->
+<!--        <p> Подтверждение пароля {{user_form.password2}}</p>-->
+        <button type="submit">Регистрация</button>
+    </form>
+    <p>
+        <form method="get" action="/">
+            <button type="submit">На главную</button>
+        </form>
+    </p>
+
+    <form method="get" action="logout_user">
+        <button type="submit">Выйти</button>
+    </form>
+</body>
+</html>

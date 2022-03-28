@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование профиля</title>
+</head>
+<body>
+    <h2>Заполните профиль пользователя:</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{user_form.as_p}}
+        {{profile_form.as_p}}
+        <button type="submit">Сохранить</button>
+    </form>
+    <p>
+        <form method="get" action="/">
+            <button type="submit">На главную</button>
+        </form>
+    </p>
+</body>
+</html>
