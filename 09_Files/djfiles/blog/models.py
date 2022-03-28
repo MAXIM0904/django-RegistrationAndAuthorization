@@ -10,6 +10,7 @@ class BlogEntry(models.Model):
     record_text = models.TextField(verbose_name="Текст записи")
     creation_date = models.DateTimeField(auto_now_add=True)
 
+
     class Meta:
         ordering = ['-creation_date']
 

@@ -10,5 +10,4 @@ urlpatterns = [
     path('registration_logout', views.registration_logout, name='registration_logout'),
     path('profile_list', UserListView.as_view(), name='profile_list'),
     path('update_user/<int:pk>', UserUpdateView.as_view(), name='update_user'),
-    # re_path(r'update_user/\d+', views.update_user, name='update_user'),
 ]
